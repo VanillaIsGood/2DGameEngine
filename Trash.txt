@@ -1,0 +1,18 @@
+ // If we've reached the end of the row, reset to the first frame in that row and move the column down.
+        // if (EntRect.x >= SpriteSheets[AnimationDict[name][0]].texture_width)
+        // {
+        //     EntRect.x = 0;
+        //     EntRect.y += FrameHeight;
+        //     std::cout << "The Current Frame : " << current_frame << std::endl;
+        //     current_frame++;
+        //     if (current_frame >= SpriteSheets[AnimationDict[name][0]].frameArr.size())
+        //     {
+        //         current_frame = 0;
+        //     }
+        // }
+        // // If we've reached the end of the column, reset to the first column in that row and move the row down.
+        // else if (EntRect.y >= SpriteSheets[AnimationDict[name][0]].texture_height)
+        // {
+        //     EntRect.x = 0;
+        //     EntRect.y = 0;
+        // }

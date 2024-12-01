@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     }
 
     // classes iniialization bing chilling
-    RenderWindow screen("Project x", 480, 440);
+    RenderWindow screen("Project x", 580, 580);
     Entity player;
 
     generate_texture test;
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     player.atr.w = 64 * 3;
 
     player.addSprite(Sprite_Adventure, 11, {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2});
-    player.nameSpriteFraming("Stand", 0, 4, 0, 0);
+    player.nameSpriteFraming("Stand", 0, 3, 0, 1);
 
     while (running)
     {

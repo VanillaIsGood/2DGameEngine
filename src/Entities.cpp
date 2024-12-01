@@ -87,7 +87,7 @@ void Entity::update(const std::string &name, int interval)
     Uint32 currentTime = SDL_GetTicks();
     static Uint32 lastUpdateTime = currentTime;
 
-    // SDL_QueryTexture(SpriteSheets[AnimationDict[name][0]].texture, NULL, NULL, &EntRect.w, &EntRect.h);
+    SDL_QueryTexture(SpriteSheets[AnimationDict[name][0]].texture, NULL, NULL, &EntRect.w, &EntRect.h);
 
     // IMPORTANT: The reason why AnimationDict[name][0] exists is so that for each time a texture is added you don't have to manually change where the texture in the vector.
     int FrameWidth = SpriteSheets[AnimationDict[name][0]].texture_width / SpriteSheets[AnimationDict[name][0]].frameArr[0];
@@ -95,6 +95,14 @@ void Entity::update(const std::string &name, int interval)
 
     EntRect.w = FrameWidth;
     EntRect.h = FrameHeight;
+
+    if (!setRectX)
+    {
+        EntRect.x += FrameWidth * AnimationDict[name][1];
+        EntRect.y += FrameHeight * AnimationDict[name][3]; // this as well
+        setRectX = true;
+        std::cout << "Animation is set!" << std::endl;
+    }
 
     if (currentTime - lastUpdateTime >= interval)
     {
@@ -109,21 +117,12 @@ void Entity::update(const std::string &name, int interval)
 
         // This line makes the x axis move to the next frame
         EntRect.x += FrameWidth;
-        
-        if (!executed)
-        {
-            std::cout << "AnimationDict : " << AnimationDict[name][1] << std::endl;
-            EntRect.x += FrameWidth * AnimationDict[name][1];
-            EntRect.y += FrameHeight * AnimationDict[name][3]; // this as well
-            executed = true;
-        }
 
         // If the FrameStart reached FrameEnd then it resets the frame back from FrameStart.
         if (EntRect.x > FrameWidth * AnimationDict[name][2] && EntRect.y >= FrameHeight * AnimationDict[name][4]) // this too
         {
             EntRect.x = FrameWidth * AnimationDict[name][1];
             EntRect.y = FrameHeight * AnimationDict[name][3]; // This was the update
-            executed = false;
             std::cout << "Frame reseted" << std::endl;
         }
         // else if the frame will reset if it reaches equal to or more than the width of the Sprite Width.
@@ -131,33 +130,14 @@ void Entity::update(const std::string &name, int interval)
         {
             EntRect.x = 0;
             EntRect.y += FrameHeight;
-            std::cout << "The Current Frame : " << current_frame << std::endl;
             current_frame++;
-            // this part also had an update
-            if (current_frame >= SpriteSheets[AnimationDict[name][0]].frameArr.size())
-            {
-                current_frame = 0;
-            }
+            std::cout << "The Current Frame : " << current_frame << std::endl;
+            // // this part also had an update
+            // if (current_frame >= SpriteSheets[AnimationDict[name][0]].frameArr.size())
+            // {
+            //     current_frame = 0;
+            // }
         }
-
-        // If we've reached the end of the row, reset to the first frame in that row and move the column down.
-        // if (EntRect.x >= SpriteSheets[AnimationDict[name][0]].texture_width)
-        // {
-        //     EntRect.x = 0;
-        //     EntRect.y += FrameHeight;
-        //     std::cout << "The Current Frame : " << current_frame << std::endl;
-        //     current_frame++;
-        //     if (current_frame >= SpriteSheets[AnimationDict[name][0]].frameArr.size())
-        //     {
-        //         current_frame = 0;
-        //     }
-        // }
-        // // If we've reached the end of the column, reset to the first column in that row and move the row down.
-        // else if (EntRect.y >= SpriteSheets[AnimationDict[name][0]].texture_height)
-        // {
-        //     EntRect.x = 0;
-        //     EntRect.y = 0;
-        // }
     }
 }
 
@@ -168,14 +148,16 @@ void Entity::render()
 
 /*  IMPORTANT IDEA: Entity won't work properly thus this is the future solution Sam before you forget about this.
 
-The idea is you have to change the structure of Entity::update() to find a way to take the column where the FrameStart or FrameEnd will start/end
+The idea is you have to change the structure of Entity::update() to find a way to take the column where the FrameStart or FrameEnd will start/end (Done)
 
 Idea 1 - Complex route:
     change the FrameStart and FrameEnd to something similar to a tuple but doing that will change the map of AnimationDict
-    like (5,3) where 5 is the column and 3 is the start of the Frame
+    like (5,3) where 5 is the column and 3 is the start of the Frame (Disregarded)
 Idea 2 - Lazy route:
-    Just add another 2 more inside the SpriteSheet and deal with it
+    Just add another 2 more inside the SpriteSheet and deal with it (Done)
 */
 
 // Btw update your drivers, Please remember to update the int FrameWidth = SpriteSheets[AnimationDict[name][0]].texture_width / SpriteSheets[AnimationDict[name][0]].frameArr[0];
 // Make sure you remember to reset the EntRect.y
+
+// Note for future Sam, make sure to set setRectX to false once the animation sprite or animation that was grouped is different from the previous one
