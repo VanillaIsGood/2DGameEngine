@@ -35,7 +35,5 @@ private:
     std::string name;
     int current_frame = 0;
 
-    bool executed = false;
-
     bool setRectX = false;
 };

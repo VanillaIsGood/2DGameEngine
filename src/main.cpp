@@ -43,7 +43,8 @@ int main(int argc, char *argv[])
     player.atr.w = 64 * 3;
 
     player.addSprite(Sprite_Adventure, 11, {7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2});
-    player.nameSpriteFraming("Stand", 0, 3, 0, 1);
+    player.nameSpriteFraming("Stand", 0, 3, 0, 0);
+    player.nameSpriteFraming("Run", 1, 6, 1, 1);
 
     while (running)
     {
@@ -63,13 +64,11 @@ int main(int argc, char *argv[])
         const int frameDelay = 1000 / 40;
         int frameStart = SDL_GetTicks();
 
-        player.update("Stand", 900);
-
         // Key strokes
         if (keyboard_state_array[SDL_SCANCODE_D])
         {
+            player.update("Run", 200);
             x = x + speed;
-            std::cout << "D" << std::endl;
         }
         if (keyboard_state_array[SDL_SCANCODE_A])
         {
@@ -88,6 +87,7 @@ int main(int argc, char *argv[])
         }
         else
         {
+            player.update("Stand", 200);
         }
         if (keyboard_state_array[SDL_SCANCODE_T])
         {
